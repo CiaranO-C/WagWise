@@ -19,7 +19,7 @@ enum Role {
 }
 
 model User {
-  id        Int        @id @default(autoIncrement())
+  id        Int        @id @default(autoincrement())
   role      Role       @default(USER)
   username  String
   email     String
@@ -32,7 +32,7 @@ model User {
 }
 
 model Article {
-  id        Int        @id @default(autoIncrement())
+  id        Int        @id @default(autoincrement())
   title     String
   body      String
   tags      Tags[]
@@ -47,7 +47,7 @@ model Article {
 }
 
 model Comment {
-  id         Int      @id @default(autoIncrement())
+  id         Int      @id @default(autoincrement())
   text       String  
   author     User     @relation(fields: [authorId], references: [id])
   authorId   Int      @map("user_id")
