@@ -19,21 +19,22 @@ enum Role {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  role      Role       @default(USER)
-  username  String
-  email     String
-  password  String     @map("password_hash")
+  id        Int            @id @default(autoincrement())
+  role      Role           @default(USER)
+  username  String         @unique
+  email     String?        @unique
+  password  String         @map("password_hash")
   comments  Comment[]
-  likes     Article[]  @relation("userLikes")
-  articles  Article[]  @relation("userArticles")
+  likes     Article[]      @relation("userLikes")
+  articles  Article[]      @relation("userArticles")
+  tokens    RefreshToken?
 
   @@map("users")
 }
 
 model Article {
   id        Int        @id @default(autoincrement())
-  title     String
+  title     String     @unique
   body      String
   tags      Tags[]
   task      Json?
@@ -62,4 +63,15 @@ model Tags {
   articles  Article[] 
 
   @@map("tags") 
+}
+
+model RefreshToken {
+id         Int       @id @default(autoincrement())
+token      String    @unique
+user       User      @relation(fields: [userId], references: [id]) 
+userId     Int       @unique @map("user_id")
+createdAt  DateTime  @default(now()) @map("created")
+expiresAt  DateTime  @map("expires")
+
+@@map("refresh_tokens")
 }
