@@ -14,8 +14,6 @@ function loginAuth(req, res, next) {
   })(req, res, next);
 }
 
-
-
 /* JWT authorization */
 function userAuth(req, res, next) {
   passport.authenticate("jwt", { session: false }, (err, user, info) => {
@@ -29,4 +27,18 @@ function userAuth(req, res, next) {
   })(req, res, next);
 }
 
-module.exports = { loginAuth, userAuth };
+const adminAuth = [
+  userAuth,
+  (req, res, next) => {
+    const { role } = req.user;
+    if (role != "ADMIN") {
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to view this resource" });
+    } else {
+      next();
+    }
+  },
+];
+
+module.exports = { loginAuth, userAuth, adminAuth };
