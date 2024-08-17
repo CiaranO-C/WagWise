@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const handler = require("./article-handler");
-const { userAuth } = require('../auth/auth');
+const { userAuth } = require('../user/auth/auth');
 
 const articleRouter = Router();
 

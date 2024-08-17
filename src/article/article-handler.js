@@ -1,8 +1,14 @@
-const service = require("./article-service");
+const {
+  getArticles,
+  getArticleById,
+  insertComment,
+} = require("./article-queries");
 
-async function getAllArticles(req, res, next) {
+async function getAllArticlesHandler(req, res, next) {
+  const sort = req.query.sort || "created";
+  const order = req.query.order || "desc";
   try {
-    const articles = await service.fetchAllArticles();
+    const articles = await getArticles(sort, order);
     if (!articles) {
       return res.status(200).json({
         message: "No articles found",
@@ -14,10 +20,10 @@ async function getAllArticles(req, res, next) {
   }
 }
 
-async function getArticle(req, res, next) {
+async function getArticleHandler(req, res, next) {
   const id = Number(req.params.id);
   try {
-    const article = await service.fetchArticleById(id);
+    const article = await getArticleById(id);
     if (!article) {
       return res.status(200).json({
         message: "Article not found",
@@ -29,9 +35,18 @@ async function getArticle(req, res, next) {
   }
 }
 
-async function postComment(req, res, next) {
-  /* logic - service.insertComment */
-  res.json({ message: "you are authorized to comment!" });
+async function postCommentHandler(req, res, next) {
+  try {
+    const { articleId, authorId, text } = req.body;
+    const newComment = await insertComment(articleId, authorId, text);
+    res.json({ message: "Success", comment: newComment });
+  } catch (error) {
+    next(error);
+  }
 }
 
-module.exports = { getAllArticles, getArticle, postComment };
+module.exports = {
+  getAllArticlesHandler,
+  getArticleHandler,
+  postCommentHandler,
+};
