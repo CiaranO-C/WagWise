@@ -17,13 +17,15 @@ const validateNewUsername = [
   validateUsername,
   body("username").custom(async (username) => {
     try {
+        console.log(username);
+        
       const userExists = await checkUsername(username);
       if (userExists) {
         throw new Error("Username already in use");
       }
       return true;
     } catch (error) {
-      throw new Error("Failed username check");
+      throw new Error(`Failed username check: ${error.message}`);
     }
   }),
 ];
