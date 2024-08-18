@@ -2,9 +2,12 @@ const {
   getArticles,
   getArticleById,
   insertComment,
+  createArticle,
+  updateArticle,
+  deleteDbArticle,
 } = require("./article-queries");
 
-async function getAllArticlesHandler(req, res, next) {
+async function getAllArticles(req, res, next) {
   const sort = req.query.sort || "created";
   const order = req.query.order || "desc";
   try {
@@ -20,7 +23,7 @@ async function getAllArticlesHandler(req, res, next) {
   }
 }
 
-async function getArticleHandler(req, res, next) {
+async function getArticle(req, res, next) {
   const id = Number(req.params.id);
   try {
     const article = await getArticleById(id);
@@ -35,7 +38,7 @@ async function getArticleHandler(req, res, next) {
   }
 }
 
-async function postCommentHandler(req, res, next) {
+async function postComment(req, res, next) {
   try {
     const { articleId, authorId, text } = req.body;
     const newComment = await insertComment(articleId, authorId, text);
@@ -45,8 +48,42 @@ async function postCommentHandler(req, res, next) {
   }
 }
 
+async function postArticle(req, res, next) {
+  try {
+    const { title, text, tagIds } = req.body;
+    const newArticle = await createArticle(title, text, tagIds, req.user.id);
+    res.json({ article: newArticle });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function putArticle(req, res, next) {
+  try {
+    const { id } = req.params;
+    const { title, text, tagIds } = req.body;
+    const article = await updateArticle(id, title, text, tagIds);
+    res.json({ article });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function deleteArticle(req, res, next) {
+  try {
+    const { id } = req.params;
+    const deleted = await deleteDbArticle(id);
+    res.json({ deleted });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
-  getAllArticlesHandler,
-  getArticleHandler,
-  postCommentHandler,
+  getAllArticles,
+  getArticle,
+  postComment,
+  postArticle,
+  putArticle,
+  deleteArticle,
 };

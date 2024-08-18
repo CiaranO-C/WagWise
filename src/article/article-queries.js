@@ -22,6 +22,40 @@ async function getArticleById(id) {
   }
 }
 
+async function createArticle(title, text, tagIds, userId) {
+  try {
+    const article = await prisma.article.create({
+      data: {
+        title: title,
+        body: text,
+        tags: tagIds,
+        authorId: userId,
+      },
+    });
+    return article;
+  } catch (error) {
+    throw new Error("Error creating article");
+  }
+}
+
+async function updateArticle(articleId, title, text, tagIds) {
+  try {
+    const updated = await prisma.article.update({
+      where: {
+        id: articleId,
+      },
+      data: {
+        title: title,
+        body: text,
+        tags: tagIds,
+      },
+    });
+    return updated;
+  } catch (error) {
+    throw new Error("Error updating article");
+  }
+}
+
 async function insertComment(articleId, authorId, text) {
   try {
     const newComment = await prisma.comment.create({
@@ -34,4 +68,25 @@ async function insertComment(articleId, authorId, text) {
   }
 }
 
-module.exports = { getArticles, getArticleById, insertComment };
+async function deleteDbArticle(id) {
+  try {
+    const deleted = await prisma.article.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return deleted;
+  } catch (error) {
+    throw new Error("Error deleting article");
+  }
+}
+
+module.exports = {
+  getArticles,
+  getArticleById,
+  createArticle,
+  updateArticle,
+  insertComment,
+  deleteDbArticle
+};
