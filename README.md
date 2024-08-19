@@ -33,7 +33,7 @@ $ npm run server
 2. Login with the [guest account](#guest-account) or create your own using a tool such as `curl` or `Postman`.
 3. Copy the JWT access token provided after login to make requests to an endpoint of your choosing, endpoint details can be found below.
 ## Guest Accounts
-user login   -->  `Guest: guestPass1`
+user login   -->  `Guest: guestPass1`\
 admin login  -->  `Admin: adminPass1`
 ## 🔎 Endpoints
 *Note: All endpoints are prefixed with "/api"*
