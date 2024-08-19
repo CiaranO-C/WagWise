@@ -23,20 +23,20 @@ The source code for the Admin CMS front-end can be found here: /*Insert repo lin
 3. Copy the JWT access token provided after login to make requests to an endpoint of your choosing, endpoint details can be found below.
 ## 🔎 Endpoints
 *Note: All endpoints are prefixed with "/api"*
-Endpoints are organised by authorisation
+Endpoints are organised by auth access
 ### Access
 - [Public](#public)
+  - [GET](#get)
+- [User](#user)
+  - [POST](#post)
   - [GET](#get-1)
-- User
-  - POST
-  - GET
-  - PUT
-  - DELETE
-- Admin
-  - POST
-  - GET
-  - PUT
-  - DELETE
+  - [PUT](#put)
+  - [DELETE](#delete)
+- [Admin](#admin)
+   - [POST](#post-1)
+  - [GET](#get-2)
+  - [PUT](#put-1)
+  - [DELETE](#delete-1)
 ### Public
 *Note: All endpoints are prefixed with "/api"*
 #### GET
