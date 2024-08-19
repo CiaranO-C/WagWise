@@ -25,8 +25,8 @@ The source code for the Admin CMS front-end can be found here: /*Insert repo lin
 *Note: All endpoints are prefixed with "/api"*
 Endpoints are organised by authorisation
 ### Access
-- Public
-  - GET
+- [Public](#public)
+  - [GET](#get-1)
 - User
   - POST
   - GET
