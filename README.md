@@ -13,10 +13,21 @@ The source code for the public/user facing front-end can be found here: /*Insert
 ## 🔧 Content Management System 
 The source code for the Admin CMS front-end can be found here: /*Insert repo link*/
 ## ⬇️ Installation
-1. Clone the repository to your local machine: `git clone https://github.com/CiaranO-C/WagWise.git`
-2. Open the project directory: `cd WagWise`.
-3. Install required dependencies: `npm install`.
-4. Run the dev server: `npm run server`.
+To clone and run this app you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/package-manager)(which comes with npm) installed.
+enter the following in your command line:
+```
+# Clone this repository
+$ git clone https://github.com/CiaranO-C/WagWise
+
+# Go into the repository
+$ cd WagWise
+
+# Install dependencies
+$ npm install
+
+# Run the server
+$ npm run server
+```
 ## 📝 Usage
 1. Configure local .env file.
 2. Login with the guest account or create your own using a tool such as `curl` or `Postman`.
