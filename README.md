@@ -158,14 +158,89 @@ Upon submitting a valid refresh token, a new JWT access token will be granted to
 #### Admin comment delete response
 ### Tags
 #### Tags get response
+Api will respond with a list of all existing tags.
+```json
+{
+    "tags": [
+        {
+            "tagName": "Training"
+        },
+        {
+            "tagName": "Feeding"
+        }
+    ]
+}
+```
 #### Tag get response
+If a matching tag exists, json containing the tagName in question, and any related articles will be returned
 #### Tags post response
+Once a tag has been successfully created, api will respond with json containing the new tag.
+```json
+{
+    "newTag": {
+        "tagName": "Training"
+    }
+}
+```
 #### Tag put response
 #### Tag delete response
 ### Articles
 #### Articles get response
+A get request to articles will return a json list of all existing articles
+```json
+{
+    "articles": [
+        {
+            "id": 2,
+            "title": "Train your dog to sit",
+            "body": "Always wanted a dog that sits on command? ....",
+            "task": null,
+            "authorId": 4,
+            "created": "2024-08-20T15:54:45.894Z",
+            "published": false
+        },
+        {
+            "id": 1,
+            "title": "Training your dog to wait for their food",
+            "body": "Follow these steps to have a perfectly behaved pup....",
+            "task": null,
+            "authorId": 4,
+            "created": "2024-08-20T15:44:06.155Z",
+            "published": false
+        }
+    ]
+}
+```
 #### Article get response
+The api will return json containing the article with a matching id
+```json
+{
+    "article": {
+        "id": 2,
+        "title": "Train your dog to sit",
+        "body": "Always wanted a dog that sits on command? ....",
+        "task": null,
+        "authorId": 4,
+        "created": "2024-08-20T15:54:45.894Z",
+        "published": false
+    }
+}
+```
 #### Articles post response
+After posting a newly written article, the api will return json including extra information such as 'authorId', 'created' and 'published'.
+```json
+{
+    "article": {
+        "id": 1,
+        "title": "Training your dog to wait for their food",
+        "body": "Follow these steps to have a perfectly behaved pup....",
+        "task": null,
+        "authorId": 4,
+        "created": "2024-08-20T15:44:06.155Z",
+        "published": false
+    }
+}
+```
 #### Article put response
 #### Article delete response
 #### Comment post response
