@@ -53,8 +53,6 @@ Endpoints are organised by auth access
   - [PUT](#put-1)
   - [DELETE](#delete-1)
 
----
-
 ### Public
 *Note: All endpoints are prefixed with "/api"*
 #### POST
@@ -125,8 +123,6 @@ Endpoints are organised by auth access
 |/articles/:id|Delete article|[res](#article-delete-response)|
 |/user/comments/:id|Delete a users comment|[res](#admin-comment-delete-response)|
 
-
----
 ## ↩️ Responses
 ### User
 #### Sign-up response
