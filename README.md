@@ -36,27 +36,121 @@ $ npm run server
 user login   -->  `Guest: guestPass1`\
 admin login  -->  `Admin: adminPass1`
 ## 🔎 Endpoints
-*Note: All endpoints are prefixed with "/api"*
+*Note: All endpoints are prefixed with "/api"*\
 Endpoints are organised by auth access
-### Access
+### Overview
 - [Public](#public)
+  - [POST](#post)
   - [GET](#get)
 - [User](#user)
-  - [POST](#post)
+  - [POST](#post-1)
   - [GET](#get-1)
   - [PUT](#put)
   - [DELETE](#delete)
 - [Admin](#admin)
-   - [POST](#post-1)
+   - [POST](#post-2)
   - [GET](#get-2)
   - [PUT](#put-1)
   - [DELETE](#delete-1)
+
+---
+
 ### Public
 *Note: All endpoints are prefixed with "/api"*
-#### GET
-|Endpoint|Description|
-|--------|-----------|
+#### POST
+|Endpoint|Description|Response|
+|--------|-----------|--------|
+|/user/sign-up|Create an account|[res](#sign-up-response)|
+|/user/log-in|Log into account|[res](#log-in-response)|
 
+#### GET
+|Endpoint|Description|Response|
+|--------|-----------|--------|
+|/tags|Get all tags|[res](#tags-get-response)|
+|/tags/:tagName|Get tag by name|[res](#tag-get-response)|
+|/articles|Get all articles|[res](#articles-get-response)|
+|/articles/:id|Get article by id|[res](#article-get-response)|
+|/user/refresh-token|Retrieve new access token|[res](#refresh-token-response)|
+
+
+---
+
+### User
+*Note: All endpoints are prefixed with "/api"*
+#### POST
+|Endpoint|Description|Response|
+|--------|-----------|--------|
+|/articles/:id/comment|Post comment on article|[res](#comment-post-response)|
+
+#### GET
+|Endpoint|Description|Response|
+|--------|-----------|--------|
+|/user/:id/comments|Get list of user comments|[res](#comments-get-response)|
+
+#### PUT
+|Endpoint|Description|Response|
+|--------|-----------|--------|
+|
+
+#### DELETE
+|Endpoint|Description|Response|
+|--------|-----------|--------|
+|/user/comments/:id|Delete own comment|[res](#comments-delete-response)|
+
+---
+
+### Admin
+*Note: All endpoints are prefixed with "/api"*
+#### POST
+|Endpoint|Description|Response|
+|--------|-----------|--------|
+|/tags|Create a new tag|[res](#tags-post-response)|
+|/articles|Create a new article|[res](#articles-post-response)|
+
+
+#### GET
+|Endpoint|Description|Response|
+|--------|-----------|--------|
+
+#### PUT
+|Endpoint|Description|Response|
+|--------|-----------|--------|
+|/tags/:tagName|Update existing tag|[res](#tag-put-response)|
+|/articles/:id|Update existing article|[res](#article-put-response)|
+
+#### DELETE
+|Endpoint|Description|Response|
+|--------|-----------|--------|
+|/tags/:tagName|Delete tag|[res](#tag-delete-response)|
+|/articles/:id|Delete article|[res](#article-delete-response)|
+|/user/comments/:id|Delete a users comment|[res](#admin-comment-delete-response)|
+
+
+---
+## Reponses
+### User
+#### Sign-up response
+#### Log-in response
+#### Refresh Token response
+#### Comments get response
+#### Comments delete response
+#### Admin comment delete response
+### Tags
+#### Tags get response
+#### Tag get response
+#### Tags post response
+#### Tag put response
+#### Tag delete response
+### Articles
+#### Articles get response
+#### Article get response
+#### Articles post response
+#### Article put response
+#### Article delete response
+#### Comment post response
+
+
+---
 ## 🖇️ Credits
 This software uses the following packages
 - [Node.js](https://nodejs.org/en/download/package-manager)
