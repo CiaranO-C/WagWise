@@ -127,7 +127,7 @@ Endpoints are organised by auth access
 
 
 ---
-## Reponses
+## ↩️ Responses
 ### User
 #### Sign-up response
 #### Log-in response
