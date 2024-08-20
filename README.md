@@ -126,8 +126,33 @@ Endpoints are organised by auth access
 ## ↩️ Responses
 ### User
 #### Sign-up response
+On a successful sign-up the api will respond with json containing a success message along with the newly created user’
+```json
+{
+    "message": "user created succesfully",
+    "newUser": {
+        "id": 3,
+        "role": "USER",
+        "username": "Guest",
+        "email": null,
+        "password": "$2a$10$jbSRYv49IfulSzJmJTGTiW3!l2z0pxnZ9QXeQW6D5jD4RtP97JC8ePS"
+    }
+}
+```
 #### Log-in response
+After succesfully logging in, the client will be returned a new JWT access token
+```json
+{
+    "jwt": "eyJhbGciOiJIUzMdfrhsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTsdhucei37n4NSwiZXhwIjoxNzI0MTY0NzA1fQ.IaaZu864xweQk3NvaRJnZRy9LjiWEWjZ2xFkt7mIuc73qQZjDxwlc1lbwNrAK2Wv"
+}
+```
 #### Refresh Token response
+Upon submitting a valid refresh token, a new JWT access token will be granted to the client.
+```json
+{
+    "jwt": "eyJhbGciOiJIet4M4NCIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTcyNNbOpW210OCwiZXhwIjoxNzI0MTY0ODY4fQ.bJY6JcKNSQWV0LkAg-FKM5JGstFfTiDSvChjPoL5ZvTyjaM_CxLPNnKcot8oQqHI"
+}
+```
 #### Comments get response
 #### Comments delete response
 #### Admin comment delete response
