@@ -173,6 +173,33 @@ Api will respond with a list of all existing tags.
 ```
 #### Tag get response
 If a matching tag exists, json containing the tagName in question, and any related articles will be returned
+```json
+{
+    "tag": {
+        "tagName": "Training",
+        "articles": [
+            {
+                "id": 1,
+                "title": "Training your dog to wait for their food",
+                "body": "Follow these steps to have a perfectly behaved pup....",
+                "task": null,
+                "authorId": 4,
+                "created": "2024-08-20T15:44:06.155Z",
+                "published": false
+            },
+            {
+                "id": 2,
+                "title": "Train your dog to sit",
+                "body": "Always wanted a dog that sits on command? ....",
+                "task": null,
+                "authorId": 4,
+                "created": "2024-08-20T15:54:45.894Z",
+                "published": false
+            }
+        ]
+    }
+}
+```
 #### Tags post response
 Once a tag has been successfully created, api will respond with json containing the new tag.
 ```json
@@ -183,7 +210,24 @@ Once a tag has been successfully created, api will respond with json containing 
 }
 ```
 #### Tag put response
+A successful put request will return json containing the previous name of the tag, and the newly updated tag
+```json
+{
+    "previous": "Training",
+    "updated": {
+        "tagName": "Obedience Training"
+    }
+}
+```
 #### Tag delete response
+A successful delete request will return json containing the deleted tag
+```json
+{
+    "deleted": {
+        "tagName": "Feeding"
+    }
+}
+```
 ### Articles
 #### Articles get response
 A get request to articles will return a json list of all existing articles
