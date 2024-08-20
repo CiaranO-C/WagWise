@@ -153,11 +153,11 @@ Upon submitting a valid refresh token, a new JWT access token will be granted to
     "jwt": "eyJhbGciOiJIet4M4NCIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTcyNNbOpW210OCwiZXhwIjoxNzI0MTY0ODY4fQ.bJY6JcKNSQWV0LkAg-FKM5JGstFfTiDSvChjPoL5ZvTyjaM_CxLPNnKcot8oQqHI"
 }
 ```
-#### Comments get response
-#### Comments delete response
-#### Admin comment delete response
+#### Comments GET response
+#### Comments DELETE response
+#### Admin comment DELETE response
 ### Tags
-#### Tags get response
+#### Tags GET response
 Api will respond with a list of all existing tags.
 ```json
 {
@@ -171,7 +171,7 @@ Api will respond with a list of all existing tags.
     ]
 }
 ```
-#### Tag get response
+#### Tag GET response
 If a matching tag exists, json containing the tagName in question, and any related articles will be returned
 ```json
 {
@@ -200,7 +200,7 @@ If a matching tag exists, json containing the tagName in question, and any relat
     }
 }
 ```
-#### Tags post response
+#### Tags POST response
 Once a tag has been successfully created, api will respond with json containing the new tag.
 ```json
 {
@@ -209,8 +209,8 @@ Once a tag has been successfully created, api will respond with json containing 
     }
 }
 ```
-#### Tag put response
-A successful put request will return json containing the previous name of the tag, and the newly updated tag
+#### Tag PUT response
+A successful PUT request will return json containing the previous name of the tag, and the newly updated tag
 ```json
 {
     "previous": "Training",
@@ -219,8 +219,8 @@ A successful put request will return json containing the previous name of the ta
     }
 }
 ```
-#### Tag delete response
-A successful delete request will return json containing the deleted tag
+#### Tag DELETE response
+A successful DELETE request will return json containing the deleted tag
 ```json
 {
     "deleted": {
@@ -229,8 +229,8 @@ A successful delete request will return json containing the deleted tag
 }
 ```
 ### Articles
-#### Articles get response
-A get request to articles will return a json list of all existing articles
+#### Articles GET response
+A GET request to articles will return a json list of all existing articles
 ```json
 {
     "articles": [
@@ -255,7 +255,7 @@ A get request to articles will return a json list of all existing articles
     ]
 }
 ```
-#### Article get response
+#### Article GET response
 The api will return json containing the article with a matching id
 ```json
 {
@@ -270,7 +270,7 @@ The api will return json containing the article with a matching id
     }
 }
 ```
-#### Articles post response
+#### Articles POST response
 After posting a newly written article, the api will return json including extra information such as 'authorId', 'created' and 'published'.
 ```json
 {
@@ -285,9 +285,9 @@ After posting a newly written article, the api will return json including extra 
     }
 }
 ```
-#### Article put response
-#### Article delete response
-#### Comment post response
+#### Article PUT response
+#### Article DELETE response
+#### Comment POST response
 
 
 ---
