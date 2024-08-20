@@ -286,7 +286,35 @@ After posting a newly written article, the api will return json including extra 
 }
 ```
 #### Article PUT response
+A successful PUT request will return json containing the updated article.
+```json
+{
+    "article": {
+        "id": 2,
+        "title": "Train your dog paw!",
+        "body": "We already know sit... lets train paw! ...",
+        "task": null,
+        "authorId": 4,
+        "created": "2024-08-20T15:54:45.894Z",
+        "published": false
+    }
+}
+```
 #### Article DELETE response
+A successful DELETE request will respond with json containing the deleted article.
+```json
+{
+    "deleted": {
+        "id": 2,
+        "title": "Train your dog paw!",
+        "body": "We already know sit... lets train paw! ...",
+        "task": null,
+        "authorId": 4,
+        "created": "2024-08-20T15:54:45.894Z",
+        "published": false
+    }
+}
+```
 #### Comment POST response
 
 
