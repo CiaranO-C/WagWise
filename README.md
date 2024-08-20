@@ -83,7 +83,7 @@ Endpoints are organised by auth access
 #### GET
 |Endpoint|Description|Response|
 |--------|-----------|--------|
-|/user/:id/comments|Get list of user comments|[res](#comments-get-response)|
+|/user/comments|Get list of user comments|[res](#comments-get-response)|
 
 #### PUT
 |Endpoint|Description|Response|
@@ -121,7 +121,7 @@ Endpoints are organised by auth access
 |--------|-----------|--------|
 |/tags/:tagName|Delete tag|[res](#tag-delete-response)|
 |/articles/:id|Delete article|[res](#article-delete-response)|
-|/user/comments/:id|Delete a users comment|[res](#admin-comment-delete-response)|
+|/user/admin/comments/:id|Delete a users comment|[res](#admin-comment-delete-response)|
 
 ## ↩️ Responses
 ### User
@@ -154,11 +154,52 @@ Upon submitting a valid refresh token, a new JWT access token will be granted to
 }
 ```
 #### Comments GET response
+A successful GET request will return a response containing a json list of all the current users comments, including the articleID.
+```json
+{
+    "comments": [
+        {
+            "id": 1,
+            "text": "I can't wait to win Crufts!",
+            "authorId": 3,
+            "articleId": 1
+        },
+        {
+            "id": 2,
+            "text": "thanks for the tips!",
+            "authorId": 3,
+            "articleId": 1
+        }
+    ]
+}
+```
 #### Comments DELETE response
+A DELETE request to a users own comment, will return a json response containing the deleted comment.
+```json
+{
+    "deleted": {
+        "id": 2,
+        "text": "thanks for the tips!",
+        "authorId": 3,
+        "articleId": 1
+    }
+}
+```
 #### Admin comment DELETE response
+A DELETE request by an admin can remove any comment, on success the server will respond with json containing the deleted comment.
+```json
+{
+    "deleted": {
+        "id": 4,
+        "text": "This article SUCKS and SO DO YOU!!!!!!!",
+        "authorId": 3,
+        "articleId": 1
+    }
+}
+```
 ### Tags
 #### Tags GET response
-Api will respond with a list of all existing tags.
+The API will respond with a list of all existing tags.
 ```json
 {
     "tags": [
@@ -316,7 +357,17 @@ A successful DELETE request will respond with json containing the deleted articl
 }
 ```
 #### Comment POST response
-
+A successful POST request will respond with json containing the newly created comment
+```json
+{
+    "comment": {
+        "id": 1,
+        "text": "I can't wait to win Crufts!",
+        "authorId": 4,
+        "articleId": 1
+    }
+}
+```
 
 ---
 ## 🖇️ Credits
