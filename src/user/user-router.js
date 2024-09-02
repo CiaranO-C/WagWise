@@ -28,15 +28,21 @@ userRouter.get(
 );
 
 /* User */
-userRouter.get("/:id/comments", userAuth, handler.getUserComments);
+userRouter.get('/', userAuth, handler.getUser)
+userRouter.get("/comments", userAuth, handler.getUserComments);
 userRouter.delete(
-  ":userId/comments/:commentId",
+  "/comments/:commentId",
   userAuth,
   handler.deleteComment,
 );
 userRouter.put("/:id", userAuth, handler.putUser);
 
 /* Admin */
-userRouter.delete("/comments/:id", adminAuth, handler.deleteComment);
+userRouter.use(adminAuth);
+userRouter.get("/admin/users", handler.getUsers);
+userRouter.get("/admin/comments/recent", handler.getRecentComments);
+userRouter.get("/admin/comments/review", handler.getReviewComments);
+userRouter.delete("/admin/comments/:id", handler.adminDeleteComment);
+
 
 module.exports = userRouter;
