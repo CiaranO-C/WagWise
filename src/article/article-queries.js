@@ -1,9 +1,37 @@
 const prisma = require("../../config/prisma");
 
-async function getArticles(sort, order) {
+async function searchArticles(value) {
+  try {
+    const articles = prisma.article.findMany({
+      include: {
+        author: {
+          select: {
+            username: true,
+          },
+        },
+      },
+      orderBy: {
+        _relevance: {
+          fields: ["title"],
+          search: value,
+          sort: "desc",
+        },
+      },
+    });
+
+    return articles;
+  } catch (error) {
+    throw new Error("Error searching databse");
+  }
+}
+
+async function getArticles(sort, order, limit) {
   try {
     const articles = await prisma.article.findMany({
+      where: { published: true },
+      include: { author: { select: { username: true } } },
       orderBy: { [sort]: order },
+      take: limit,
     });
 
     return articles;
@@ -12,9 +40,27 @@ async function getArticles(sort, order) {
   }
 }
 
+async function getUnpublished(sort, order, limit) {
+  try {
+    const articles = await prisma.article.findMany({
+      where: { published: false },
+      include: { author: { select: { username: true } } },
+      orderBy: { [sort]: order },
+      take: limit,
+    });
+
+    return articles;
+  } catch (error) {
+    throw new Error("Error retrieving unpublished articles");
+  }
+}
+
 async function getArticleById(id) {
   try {
-    const article = await prisma.article.findUnique({ where: { id: id } });
+    const article = await prisma.article.findUnique({
+      where: { id: id },
+      include: { tags: true },
+    });
 
     return article;
   } catch (error) {
@@ -22,13 +68,20 @@ async function getArticleById(id) {
   }
 }
 
-async function createArticle(title, text, tagIds, userId) {
+async function createArticle(title, text, tagNames, userId) {
   try {
+    console.log(typeof tagNames);
+
     const article = await prisma.article.create({
       data: {
         title: title,
         body: text,
-        tags: tagIds,
+        tags: {
+          connectOrCreate: tagNames.map((tag) => ({
+            where: { tagName: tag },
+            create: { tagName: tag },
+          })),
+        },
         authorId: userId,
       },
     });
@@ -38,7 +91,7 @@ async function createArticle(title, text, tagIds, userId) {
   }
 }
 
-async function updateArticle(articleId, title, text, tagIds) {
+async function updateArticle(articleId, title, text, tagNames) {
   try {
     const updated = await prisma.article.update({
       where: {
@@ -47,7 +100,9 @@ async function updateArticle(articleId, title, text, tagIds) {
       data: {
         title: title,
         body: text,
-        tags: tagIds,
+        tags: {
+          set: tagNames.map((tag) => ({ tagName: tag })),
+        },
       },
     });
     return updated;
@@ -56,10 +111,10 @@ async function updateArticle(articleId, title, text, tagIds) {
   }
 }
 
-async function insertComment(articleId, authorId, text) {
+async function insertComment(articleId, authorId, text, review) {
   try {
     const newComment = await prisma.comment.create({
-      data: { articleId, authorId, text },
+      data: { articleId, authorId, text, review },
     });
 
     return newComment;
@@ -82,11 +137,49 @@ async function deleteDbArticle(id) {
   }
 }
 
+async function publishArticle(id) {
+  try {
+    const published = await prisma.article.update({
+      where: {
+        id: id,
+      },
+      data: {
+        published: true,
+      },
+    });
+
+    return published;
+  } catch (error) {
+    throw new Error("Error publishing article");
+  }
+}
+
+async function unpublishArticle(id) {
+  try {
+    const unpublished = await prisma.article.update({
+      where: {
+        id: id,
+      },
+      data: {
+        published: false,
+      },
+    });
+
+    return unpublished;
+  } catch (error) {
+    throw new Error("Error unpublishing article");
+  }
+}
+
 module.exports = {
   getArticles,
   getArticleById,
   createArticle,
   updateArticle,
   insertComment,
-  deleteDbArticle
+  deleteDbArticle,
+  getUnpublished,
+  publishArticle,
+  unpublishArticle,
+  searchArticles,
 };
