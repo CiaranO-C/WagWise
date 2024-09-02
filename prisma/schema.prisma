@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -33,27 +34,31 @@ model User {
 }
 
 model Article {
-  id        Int        @id @default(autoincrement())
-  title     String     @unique
-  body      String
-  tags      Tags[]
-  task      Json?
-  author    User       @relation("userArticles", fields: [authorId], references: [id])
-  authorId  Int        @map("user_id")
-  comments  Comment[]  
-  likes     User[]     @relation("userLikes")
-  created   DateTime   @default(now())  
+  id         Int        @id @default(autoincrement())
+  title      String     @unique
+  body       String
+  tags       Tags[]
+  task       Json?
+  author     User       @relation("userArticles", fields: [authorId], references: [id])
+  authorId   Int        @map("user_id")
+  comments   Comment[]  
+  likes      User[]     @relation("userLikes")
+  created    DateTime   @default(now())  
+  updated    DateTime   @updatedAt
+  published  Boolean    @default(false)
 
   @@map("articles")
 }
 
 model Comment {
-  id         Int      @id @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   text       String  
-  author     User     @relation(fields: [authorId], references: [id])
-  authorId   Int      @map("user_id")
-  article    Article  @relation(fields: [articleId], references: [id])
-  articleId  Int      @map("article_id")
+  author     User       @relation(fields: [authorId], references: [id])
+  authorId   Int        @map("user_id")
+  article    Article    @relation(fields: [articleId], references: [id])
+  articleId  Int        @map("article_id")
+  created    DateTime   @default(now()) 
+  review     Boolean    @default(false)
 
   @@map("comments")
 }
