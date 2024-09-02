@@ -2,7 +2,20 @@ const prisma = require("../../config/prisma");
 
 async function retrieveTags() {
   try {
-    const tags = await prisma.tags.findMany();
+    const tags = await prisma.tags.findMany({
+      include: {
+        _count: {
+          select: {
+            articles: true,
+          },
+        },
+      },
+      orderBy: {
+        articles: {
+          _count: "desc",
+        },
+      },
+    });
     return tags;
   } catch (error) {
     throw new Error("Error retrieving tags");
@@ -52,7 +65,7 @@ async function createTag(tagName) {
   try {
     const newTag = await prisma.tags.create({
       data: {
-        tagName,
+        tagName: tagName,
       },
     });
     return newTag;
@@ -61,4 +74,10 @@ async function createTag(tagName) {
   }
 }
 
-module.exports = { retrieveTags, getTagByName, updateTag, deleteDbTag, createTag };
+module.exports = {
+  retrieveTags,
+  getTagByName,
+  updateTag,
+  deleteDbTag,
+  createTag,
+};
