@@ -58,17 +58,17 @@ Endpoints are organised by auth access
 #### POST
 |Endpoint|Description|Response|
 |--------|-----------|--------|
-|/user/sign-up|Create an account|[res](#sign-up-response)|
-|/user/log-in|Log into account|[res](#log-in-response)|
+|/user/sign-up|Create an account|[Sign-up response](#sign-up-response)|
+|/user/log-in|Log into account|[Log in response](#log-in-response)|
 
 #### GET
 |Endpoint|Description|Response|
 |--------|-----------|--------|
-|/tags|Get all tags|[res](#tags-get-response)|
-|/tags/:tagName|Get tag by name|[res](#tag-get-response)|
-|/articles|Get all articles|[res](#articles-get-response)|
-|/articles/:id|Get article by id|[res](#article-get-response)|
-|/user/refresh-token|Retrieve new access token|[res](#refresh-token-response)|
+|/tags|Gets all article tags|[Get all tags response](#tags-get-response)|
+|/tags/:tagName|Get tag by name|[Get Tag name response](#tag-get-response)|
+|/articles|Gets all published articles|[Get all articles response](#articles-get-response)|
+|/articles/:id|Gets a single article by id|[Get article response](#article-get-response)|
+|/user/refresh-token|A valid refresh token retrieve a fresh access token|[Refresh token resposne](#refresh-token-response)|
 
 
 ---
@@ -78,12 +78,12 @@ Endpoints are organised by auth access
 #### POST
 |Endpoint|Description|Response|
 |--------|-----------|--------|
-|/articles/:id/comment|Post comment on article|[res](#comment-post-response)|
+|/articles/:id/comment|Posts a comment on current article|[Post comment response](#comment-post-response)|
 
 #### GET
 |Endpoint|Description|Response|
 |--------|-----------|--------|
-|/user/comments|Get list of user comments|[res](#comments-get-response)|
+|/user/comments|Gets list of users own comments|[Get comments response](#comments-get-response)|
 
 #### PUT
 |Endpoint|Description|Response|
@@ -93,7 +93,7 @@ Endpoints are organised by auth access
 #### DELETE
 |Endpoint|Description|Response|
 |--------|-----------|--------|
-|/user/comments/:id|Delete own comment|[res](#comments-delete-response)|
+|/user/comments/:id|User can delete their own comment|[Delete comment response](#comments-delete-response)|
 
 ---
 
@@ -102,8 +102,8 @@ Endpoints are organised by auth access
 #### POST
 |Endpoint|Description|Response|
 |--------|-----------|--------|
-|/tags|Create a new tag|[res](#tags-post-response)|
-|/articles|Create a new article|[res](#articles-post-response)|
+|/tags|Creates a new article tag|[Post tag response](#tags-post-response)|
+|/articles|Creates a new article|[Post article response](#articles-post-response)|
 
 
 #### GET
@@ -113,15 +113,15 @@ Endpoints are organised by auth access
 #### PUT
 |Endpoint|Description|Response|
 |--------|-----------|--------|
-|/tags/:tagName|Update existing tag|[res](#tag-put-response)|
-|/articles/:id|Update existing article|[res](#article-put-response)|
+|/tags/:tagName|Updates an existing tags name|[Put tag response](#tag-put-response)|
+|/articles/:id|Updates an existing article by id|[Put article response](#article-put-response)|
 
 #### DELETE
 |Endpoint|Description|Response|
 |--------|-----------|--------|
-|/tags/:tagName|Delete tag|[res](#tag-delete-response)|
-|/articles/:id|Delete article|[res](#article-delete-response)|
-|/user/admin/comments/:id|Delete a users comment|[res](#admin-comment-delete-response)|
+|/tags/:tagName|Deletes article tag|[Delete tag response](#tag-delete-response)|
+|/articles/:id|Delete any article by id|[Delete article response](#article-delete-response)|
+|/user/admin/comments/:id|Delete any non-admin users comment|[Delete comment response](#admin-comment-delete-response)|
 
 ## ↩️ Responses
 ### User
