@@ -16,13 +16,13 @@ function intialisePassport() {
       },
       async (payload, done) => {
         try {
-          // if JWT valid return user
+          // if JWT valid find user in db
           const user = await prisma.user.findUnique({
             where: { id: payload.userId },
           });
 
           if (user) {
-            // user id valid
+            // user found
             console.log("found user!", user.username);
             return done(null, user);
           } else {

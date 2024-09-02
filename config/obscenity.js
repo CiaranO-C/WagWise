@@ -15,7 +15,8 @@ const censor = new TextCensor().setStrategy(asteriskStrategy);
 
 function profanityReplace(text) {
   const matches = matcher.getAllMatches(text);
-  console.log(censor.applyTo(text, matches));
+  const cleanText = censor.applyTo(text, matches);
+  return cleanText;
 }
 
 function profanityCheck(text) {
