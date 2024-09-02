@@ -27,10 +27,10 @@ async function getTag(req, res, next) {
 
 async function putTag(req, res, next) {
   try {
-    const { tagName } = req.params.tagName;
+    const { tagName } = req.params;
     const { newName } = req.body;
     const updated = await updateTag(tagName, newName);
-    res.json({ updated });
+    res.json({ previous: tagName, updated });
   } catch (error) {
     next(error);
   }
@@ -38,7 +38,7 @@ async function putTag(req, res, next) {
 
 async function deleteTag(req, res, next) {
   try {
-    const { tagName } = req.params.tagName;
+    const { tagName } = req.params;
     const deleted = await deleteDbTag(tagName);
     res.json({ deleted });
   } catch (error) {
@@ -49,6 +49,8 @@ async function deleteTag(req, res, next) {
 async function postTag(req, res, next) {
   try {
     const { tagName } = req.body;
+    console.log(tagName);
+    
     const newTag = await createTag(tagName);
     res.json({ newTag });
   } catch (error) {
