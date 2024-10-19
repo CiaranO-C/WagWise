@@ -1,12 +1,14 @@
 const prisma = require("../../config/prisma");
 
-async function retrieveTags() {
+async function retrieveTags(user) {
   try {
+    //if user not admin, count only published articles
+    const condition = user?.role === "ADMIN" ? {} : { published: true }; 
     const tags = await prisma.tags.findMany({
       include: {
         _count: {
           select: {
-            articles: true,
+            articles: { where: condition },
           },
         },
       },
@@ -22,17 +24,24 @@ async function retrieveTags() {
   }
 }
 
-async function getTagByName(name) {
+async function getTagByName(name, user) {
   try {
+    //if user not admin, get only published articles
+    const condition = user?.role === "ADMIN" ? {} : { published: true };    
     const tag = await prisma.tags.findUnique({
       where: { tagName: name },
       include: {
-        articles: true,
+        articles: {
+          where: condition,
+          include: {
+            author: true,
+          },
+        },
       },
     });
     return tag;
   } catch (error) {
-    throw new Error(`Error retrieving tag: ${id}`);
+    throw new Error(`Error retrieving tag: ${name}`);
   }
 }
 
