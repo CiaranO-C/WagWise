@@ -1,4 +1,5 @@
 const { profanityCheck, profanityReplace } = require("../../config/obscenity");
+
 const {
   getArticles,
   getArticleById,
@@ -18,11 +19,13 @@ async function getAllArticles(req, res, next) {
   const limit = Number(req.query.limit) || 100;
   try {
     const articles = await getArticles(sort, order, limit);
-    if (!articles) {
+    if (!articles || articles.length === 0) {
       return res.status(200).json({
         message: "No articles found",
       });
     }
+    console.log(articles);
+    
     return res.status(200).json({ articles });
   } catch (error) {
     next(error);
@@ -48,9 +51,11 @@ async function postComment(req, res, next) {
   try {
     const articleId = Number(req.params.id);
     const authorId = req.user.id;
+    
     let { text } = req.body;
     const isBad = profanityCheck(text);
     if (isBad) text = profanityReplace(text);
+
     const newComment = await insertComment(articleId, authorId, text, isBad);
     res.json({ comment: newComment });
   } catch (error) {
@@ -83,7 +88,10 @@ async function putArticle(req, res, next) {
 
 async function deleteArticle(req, res, next) {
   try {
+    console.log("REQ PARAM -->", req.params);
     const id = Number(req.params.id);
+    console.log("ID PASSED -->", id);
+    
     const deleted = await deleteDbArticle(id);
     res.json({ deleted });
   } catch (error) {
@@ -136,10 +144,16 @@ async function postUnpublish(req, res, next) {
 }
 
 async function getSearchArticles(req, res, next) {
+  console.log("HELLO");
+  
   try {
+    const user = req?.user;
+    console.log(user);
+    
     //if search has mulptiple words format for prisma query
     const searchQuery = req.query.query.split(" ").join(" | ");
-    const articles = await searchArticles(searchQuery);
+    const articles = await searchArticles(searchQuery, user);
+console.log(searchQuery);
 
     res.json({ articles });
   } catch (error) {
