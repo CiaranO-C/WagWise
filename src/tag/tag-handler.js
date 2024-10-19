@@ -8,7 +8,8 @@ const {
 
 async function getAllTags(req, res, next) {
   try {
-    const tags = await retrieveTags();
+    const user = req?.user;
+    const tags = await retrieveTags(user);
     res.json({ tags });
   } catch (error) {
     next(error);
@@ -17,8 +18,11 @@ async function getAllTags(req, res, next) {
 
 async function getTag(req, res, next) {
   try {
+    const user = req?.user;
+    console.log(user);
+    
     const tagName = req.params.tagName;
-    const tag = await getTagByName(tagName);
+    const tag = await getTagByName(tagName, user);
     res.json({ tag });
   } catch (error) {
     next(error);
