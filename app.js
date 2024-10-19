@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
   "https://wagwise-cms.vercel.app",
-  "http://localhost:5175",
+  "https://wagwise-blog.vercel.app",
 ];
 
 app.use(
