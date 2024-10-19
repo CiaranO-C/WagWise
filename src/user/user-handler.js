@@ -9,6 +9,9 @@ const {
   retrieveRecentComments,
   retrieveAllUsers,
   retrieveReviewComments,
+  retrieveAllComments,
+  toggleReviewComment,
+  deleteAllComments,
 } = require("./user-queries");
 
 const createUser = async (req, res, next) => {
@@ -22,8 +25,11 @@ const createUser = async (req, res, next) => {
         .json({ errors: err.array({ onlyFirstError: true }) });
     }
     const newUser = await createNewUser(username, password);
-
-    return res.json({ message: "user created succesfully", newUser });
+    
+    return res.json({
+      message: "user created succesfully",
+      newUser: { username: newUser.username },
+    });
   } catch (error) {
     next(error);
   }
@@ -125,13 +131,45 @@ async function getReviewComments(req, res, next) {
   }
 }
 
+async function getComments(req, res, next) {
+  try {
+    const comments = await retrieveAllComments();
+    res.json({ comments });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function putComment(req, res, next) {
+  try {
+    const commentId = Number(req.params.id);
+
+    const toggled = await toggleReviewComment(commentId);
+    res.json({ toggled });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function deleteComments(req, res, next) {
+  try {
+    const deleted = await deleteAllComments();
+    res.json({ deleted });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   createUser,
   getUserComments,
   deleteComment,
   adminDeleteComment,
+  getComments,
   getRecentComments,
   getReviewComments,
+  putComment,
+  deleteComments,
   putUser,
   getUser,
   getUsers,

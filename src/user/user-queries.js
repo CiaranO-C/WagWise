@@ -58,6 +58,24 @@ async function retrieveReviewComments() {
   }
 }
 
+async function retrieveAllComments() {
+  try {
+    const comments = await prisma.comment.findMany({
+      include: {
+        author: {
+          select: { username: true, id: true },
+        },
+        article: {
+          select: { title: true, id: true },
+        },
+      },
+    });
+    return comments;
+  } catch (error) {
+    throw new Error("Error retrieving all comments");
+  }
+}
+
 async function getCommentAuthorId(commentId) {
   try {
     const authorId = await prisma.comment.findUnique({
@@ -99,7 +117,7 @@ async function updateUser(id) {
 
 async function retrieveUser(id) {
   try {
-    const user = prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: id,
       },
@@ -116,10 +134,49 @@ async function retrieveUser(id) {
 
 async function retrieveAllUsers() {
   try {
-    const users = prisma.user.findMany({ where: { role: "USER" } });
+    const users = await prisma.user.findMany({
+      where: { role: "USER" },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        likes: true,
+        comments: true,
+      },
+    });
     return users;
   } catch (error) {
     throw new Error("Error retrieving users");
+  }
+}
+
+async function toggleReviewComment(id) {
+  try {
+    const { review: currentStatus } = await prisma.comment.findUnique({
+      where: { id },
+      select: { review: true },
+    });
+
+    const updated = await prisma.comment.update({
+      where: { id },
+      data: { review: !currentStatus },
+    });
+
+    return updated;
+  } catch (error) {
+    throw new Error("Error updating review status");
+  }
+}
+
+async function deleteAllComments() {
+  try {
+    const { deleted } = await prisma.comment.deleteMany({
+      where: { review: true },
+    });
+
+    return deleted;
+  } catch (error) {
+    throw new Error("Error updating review status");
   }
 }
 
@@ -134,4 +191,7 @@ module.exports = {
   retrieveAllUsers,
   retrieveRecentComments,
   retrieveReviewComments,
+  retrieveAllComments,
+  toggleReviewComment,
+  deleteAllComments,
 };
