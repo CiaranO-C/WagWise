@@ -1,82 +1,76 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
-   previewFeatures = ["fullTextSearch", "fullTextIndex"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-enum Role {
-  USER
-  ADMIN
+  url      = env("DATABASE_PUBLIC_URL")
 }
 
 model User {
-  id        Int            @id @default(autoincrement())
-  role      Role           @default(USER)
-  username  String         @unique
-  email     String?        @unique
-  password  String         @map("password_hash")
-  comments  Comment[]
-  likes     Article[]      @relation("userLikes")
-  articles  Article[]      @relation("userArticles")
-  tokens    RefreshToken?
+  id       Int           @id @default(autoincrement())
+  username String        @unique
+  email    String?       @unique
+  password String        @map("password_hash")
+  role     Role          @default(USER)
+  articles Article[]     @relation("userArticles")
+  comments Comment[]
+  tokens   RefreshToken?
+  likes    Article[]     @relation("userLikes")
 
   @@map("users")
 }
 
 model Article {
-  id         Int        @id @default(autoincrement())
-  title      String     @unique
-  body       String
-  tags       Tags[]
-  task       Json?
-  author     User       @relation("userArticles", fields: [authorId], references: [id])
-  authorId   Int        @map("user_id")
-  comments   Comment[]  
-  likes      User[]     @relation("userLikes")
-  created    DateTime   @default(now())  
-  updated    DateTime   @updatedAt
-  published  Boolean    @default(false)
+  id        Int       @id @default(autoincrement())
+  title     String    @unique
+  body      String
+  task      Json?
+  authorId  Int       @map("user_id")
+  created   DateTime  @default(now())
+  updated   DateTime  @updatedAt
+  published Boolean   @default(false)
+  author    User      @relation("userArticles", fields: [authorId], references: [id])
+  comments  Comment[]
+  tags      Tags[]    @relation("ArticleToTags")
+  likes     User[]    @relation("userLikes")
 
   @@map("articles")
 }
 
 model Comment {
-  id         Int        @id @default(autoincrement())
-  text       String  
-  author     User       @relation(fields: [authorId], references: [id])
-  authorId   Int        @map("user_id")
-  article    Article    @relation(fields: [articleId], references: [id])
-  articleId  Int        @map("article_id")
-  created    DateTime   @default(now()) 
-  review     Boolean    @default(false)
+  id        Int      @id @default(autoincrement())
+  text      String
+  authorId  Int      @map("user_id")
+  articleId Int      @map("article_id")
+  created   DateTime @default(now())
+  review    Boolean  @default(false)
+  article   Article  @relation(fields: [articleId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id])
 
   @@map("comments")
 }
 
 model Tags {
-  tagName   String     @id @map("tag_name")
-  articles  Article[] 
+  tagName  String    @id @map("tag_name")
+  articles Article[] @relation("ArticleToTags")
 
-  @@map("tags") 
+  @@map("tags")
 }
 
 model RefreshToken {
-id         Int       @id @default(autoincrement())
-token      String    @unique
-user       User      @relation(fields: [userId], references: [id]) 
-userId     Int       @unique @map("user_id")
-createdAt  DateTime  @default(now()) @map("created")
-expiresAt  DateTime  @map("expires")
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int      @unique @map("user_id")
+  createdAt DateTime @default(now()) @map("created")
+  expiresAt DateTime @map("expires")
+  user      User     @relation(fields: [userId], references: [id])
 
-@@map("refresh_tokens")
+  @@map("refresh_tokens")
+}
+
+enum Role {
+  USER
+  ADMIN
 }
