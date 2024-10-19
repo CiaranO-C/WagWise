@@ -1,12 +1,23 @@
 const prisma = require("../../config/prisma");
 
-async function searchArticles(value) {
+async function searchArticles(value, user) {
   try {
+    //if user is not admin only fetch published articles
+    const condition = user?.role === "ADMIN" ? {} : { published: true };
+    console.log(condition);
+
     const articles = prisma.article.findMany({
+      where: condition,
       include: {
         author: {
           select: {
             username: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            comments: true,
           },
         },
       },
@@ -29,7 +40,10 @@ async function getArticles(sort, order, limit) {
   try {
     const articles = await prisma.article.findMany({
       where: { published: true },
-      include: { author: { select: { username: true } } },
+      include: {
+        author: { select: { username: true } },
+        _count: { select: { likes: true, comments: true } },
+      },
       orderBy: { [sort]: order },
       take: limit,
     });
@@ -59,7 +73,11 @@ async function getArticleById(id) {
   try {
     const article = await prisma.article.findUnique({
       where: { id: id },
-      include: { tags: true },
+      include: {
+        tags: true,
+        likes: true,
+        comments: { include: { author: { select: { username: true } } } },
+      },
     });
 
     return article;
@@ -124,6 +142,8 @@ async function insertComment(articleId, authorId, text, review) {
 }
 
 async function deleteDbArticle(id) {
+  console.log("ID -->", id);
+
   try {
     const deleted = await prisma.article.delete({
       where: {
