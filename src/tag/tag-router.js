@@ -13,7 +13,8 @@ tagRouter.get("/:tagName", handler.getTag);
 /* Admin */
 tagRouter.use(adminAuth);
 tagRouter.post("/", handler.postTag);
-tagRouter.put("/:tagName", handler.putTag)
-tagRouter.delete("/:tagName", handler.deleteTag)
-
+tagRouter.put("/:tagName", handler.putTag);
+tagRouter.delete("/:tagName", handler.deleteTag);
+tagRouter.get("/admin/all", handler.getAllTags);
+tagRouter.get("/admin/:tagName", handler.getTag);
 module.exports = tagRouter;
