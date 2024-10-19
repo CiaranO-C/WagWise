@@ -9,10 +9,24 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
+const allowedOrigins = [
+  "https://wagwise-cms.vercel.app",
+  "http://localhost:5175",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173", 
-    credentials: true, 
+    origin: function (origin, callback) {
+      console.log("Origin received:", origin);
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log(origin);
+
+        callback(new Error("Invalid origin"));
+      }
+    },
+    credentials: true,
   }),
 );
 app.use(express.json());
