@@ -1,8 +1,11 @@
 const prisma = require("../../../config/prisma");
+const { all } = require('../user-router');
 
 async function saveRefreshToken(userId, jti, created, expires) {
+  console.log("saving refresh token!", userId, jti, created, expires);
+  
   try {
-    await prisma.refreshToken.upsert({
+    const stored = await prisma.refreshToken.upsert({
       where: {
         userId: userId,
       },
@@ -18,6 +21,9 @@ async function saveRefreshToken(userId, jti, created, expires) {
         expiresAt: expires,
       },
     });
+
+    console.log(stored);
+    
   } catch (error) {
     throw new Error("Error saving refresh token");
   }
@@ -25,6 +31,11 @@ async function saveRefreshToken(userId, jti, created, expires) {
 
 async function findRefreshToken(jti) {
   // search db for valid matching token
+  const allTokens = await prisma.refreshToken.findMany();
+console.log(jti);
+
+  console.log(allTokens);
+  
   const validToken = await prisma.refreshToken.findUnique({
     where: { token: jti },
     include: { user: true },
