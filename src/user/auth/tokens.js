@@ -34,16 +34,10 @@ async function sendTokensToClient(req, res, next) {
     const { user } = req;
     const [accessToken, refreshToken] = await generateTokens(user.id);
     console.log("accessToken: ", accessToken, "refreshToken: ", refreshToken);
-    
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      secure: true,
-    });
 
     return res.status(200).json({
       jwt: accessToken,
+      refreshToken,
       user: {
         id: user.id,
         username: user.username,
@@ -63,26 +57,25 @@ async function authorizeRefreshToken(req, res, next) {
 
     if (!refreshToken) {
       console.log("No refresh token!");
-      
+
       return res
         .status(401)
         .json({ message: "Client does not have refresh token" });
     }
-   
-    
+
     // check db for valid token
     const validToken = await checkValidToken(refreshToken);
 
     // token invalid or expired
     if (!validToken || new Date() > validToken.expiresAt) {
       console.log("refresh token invalid or expired");
-      
+
       return res
         .status(401)
         .json({ message: "Token invalid, Log in to generate new token" });
     }
     console.log("Refresh token valid!");
-    
+
     // valid refresh token
     req.user = validToken.user;
     next();
