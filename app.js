@@ -10,9 +10,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
+  "http://localhost:5174",
   "https://wagwise-cms.vercel.app",
   "https://wagwise-blog.vercel.app",
 ];
+
+app.set("trust proxy", true);
 
 app.use(
   cors({
