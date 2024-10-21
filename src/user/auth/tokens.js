@@ -52,7 +52,7 @@ async function sendTokensToClient(req, res, next) {
 
 async function authorizeRefreshToken(req, res, next) {
   try {
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken = req.headers['refresh'];
     console.log("Received refresh token --> ", refreshToken);
 
     if (!refreshToken) {
