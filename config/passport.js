@@ -23,7 +23,6 @@ function intialisePassport() {
 
           if (user) {
             // user found
-            console.log("found user!", user.username);
             return done(null, user);
           } else {
             // payload contains invalid user id
@@ -45,6 +44,10 @@ function intialisePassport() {
         // check for username in database
         const user = await prisma.user.findUnique({
           where: { username: username },
+          include: {
+            likes: true,
+            comments: true,
+          },
         });
 
         if (!user) {
