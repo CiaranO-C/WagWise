@@ -12,6 +12,7 @@ const {
   retrieveAllComments,
   toggleReviewComment,
   deleteAllComments,
+  updateUserLikes,
 } = require("./user-queries");
 
 const createUser = async (req, res, next) => {
@@ -25,7 +26,7 @@ const createUser = async (req, res, next) => {
         .json({ errors: err.array({ onlyFirstError: true }) });
     }
     const newUser = await createNewUser(username, password);
-    
+
     return res.json({
       message: "user created succesfully",
       newUser: { username: newUser.username },
@@ -60,10 +61,8 @@ async function deleteComment(req, res, next) {
 async function adminDeleteComment(req, res, next) {
   try {
     const commentId = Number(req.params.id);
-    console.log(commentId);
 
     const { authorId } = await getCommentAuthorId(commentId);
-    console.log(authorId);
 
     const deleted = await deleteDbComment(authorId, commentId);
     res.json({ deleted });
@@ -87,8 +86,16 @@ async function putUser(req, res, next) {
 
 async function getUser(req, res, next) {
   try {
+    console.log("TIME: ", new Date());
+
+    console.log("IN GET USER");
+
     const { id } = req.user;
+    console.log("USER ID -> ", id);
+
     const user = await retrieveUser(id);
+    console.log("USER -> ", Boolean(user));
+
     res.json({
       user: {
         id: user.id,
@@ -134,6 +141,8 @@ async function getReviewComments(req, res, next) {
 async function getComments(req, res, next) {
   try {
     const comments = await retrieveAllComments();
+    console.log("COMMENTS: ", comments);
+
     res.json({ comments });
   } catch (error) {
     next(error);
@@ -160,6 +169,16 @@ async function deleteComments(req, res, next) {
   }
 }
 
+async function putLike(req, res, next) {
+  try {
+    const { id: articleId, like } = req.body;
+    await updateUserLikes(req.user, articleId, like);
+    res.json({ updated: true });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   createUser,
   getUserComments,
@@ -173,4 +192,5 @@ module.exports = {
   putUser,
   getUser,
   getUsers,
+  putLike,
 };

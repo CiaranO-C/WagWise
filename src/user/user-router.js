@@ -31,7 +31,9 @@ userRouter.get(
 userRouter.get("/", userAuth, handler.getUser);
 userRouter.get("/comments", userAuth, handler.getUserComments);
 userRouter.delete("/comments/:commentId", userAuth, handler.deleteComment);
+userRouter.put("/likes", userAuth, handler.putLike);
 userRouter.put("/:id", userAuth, handler.putUser);
+
 
 /* Admin */
 userRouter.use(adminAuth);

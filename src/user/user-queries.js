@@ -176,7 +176,31 @@ async function deleteAllComments() {
 
     return deleted;
   } catch (error) {
-    throw new Error("Error updating review status");
+    throw new Error("Error deleting comments");
+  }
+}
+
+async function updateUserLikes(user, articleId, like) {
+  try {
+    const type = like ? "connect" : "disconnect";
+    console.log(like ? "LIKING POST!" : "DISLIKING POST!");
+    
+    const res = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        likes: {
+          [type]: {
+            id: Number(articleId),
+          },
+        },
+      },
+    });
+   
+    return res;
+  } catch (error) {
+    throw new Error("Error liking article");
   }
 }
 
@@ -194,4 +218,5 @@ module.exports = {
   retrieveAllComments,
   toggleReviewComment,
   deleteAllComments,
+  updateUserLikes,
 };
