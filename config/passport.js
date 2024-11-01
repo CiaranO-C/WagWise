@@ -49,7 +49,8 @@ function intialisePassport() {
             comments: true,
           },
         });
-
+        console.log("local strategy user found", user);
+        
         if (!user) {
           return done(null, false, { message: "Username does not exist" });
         }
