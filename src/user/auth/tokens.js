@@ -33,9 +33,6 @@ async function sendTokensToClient(req, res, next) {
     // generate new token pair - also saves to db
     const { user } = req;
     const [accessToken, refreshToken] = await generateTokens(user.id);
-    console.log("accessToken: ", accessToken)
-    console.log("refreshToken: ", refreshToken);
-    
 
     return res.status(200).json({
       jwt: accessToken,
@@ -45,6 +42,8 @@ async function sendTokensToClient(req, res, next) {
         username: user.username,
         email: user.email,
         role: user.role,
+        likes: user.likes,
+        comments: user.comments,
       },
     });
   } catch (error) {
@@ -54,7 +53,7 @@ async function sendTokensToClient(req, res, next) {
 
 async function authorizeRefreshToken(req, res, next) {
   try {
-    const refreshToken = req.headers['refresh'];  
+    const refreshToken = req.headers["refresh"];
     console.log("Received refresh token --> ", refreshToken);
 
     if (!refreshToken) {
