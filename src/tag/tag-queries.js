@@ -3,7 +3,7 @@ const prisma = require("../../config/prisma");
 async function retrieveTags(user) {
   try {
     //if user not admin, count only published articles
-    const condition = user?.role === "ADMIN" ? {} : { published: true }; 
+    const condition = user?.role === "ADMIN" ? {} : { published: true };
     const tags = await prisma.tags.findMany({
       include: {
         _count: {
@@ -27,14 +27,21 @@ async function retrieveTags(user) {
 async function getTagByName(name, user) {
   try {
     //if user not admin, get only published articles
-    const condition = user?.role === "ADMIN" ? {} : { published: true };    
+    const condition = user?.role === "ADMIN" ? {} : { published: true };
     const tag = await prisma.tags.findUnique({
       where: { tagName: name },
       include: {
         articles: {
           where: condition,
           include: {
+            _count: {
+              select: {
+                likes: true,
+                comments: true,
+              },
+            },
             author: true,
+            tags: true,
           },
         },
       },
