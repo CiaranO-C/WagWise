@@ -372,7 +372,7 @@ A successful POST request will respond with json containing the newly created co
 
 ---
 ## 🖇️ Credits
-This software uses the following packages
+This software uses the following dependencies:
 - [Node.js](https://nodejs.org/en/download/package-manager)
 - [Express](https://expressjs.com)
 - [Express-validator](https://express-validator.github.io/docs/)
