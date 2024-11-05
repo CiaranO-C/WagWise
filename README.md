@@ -12,7 +12,7 @@ Welcome to the Wag Wise API. This RESTful API connects to the backend of the Wag
 ## 😃 User Inteface
 The source code for the public/user facing front-end can be found here: /*Insert repo link*/
 ## 🔧 Content Management System 
-The source code for the Admin CMS front-end can be found here: /*Insert repo link*/
+The source code for the Admin CMS front-end can be found here: [Wag Wise CMS](https://github.com/CiaranO-C/wagwise-cms)
 ## ⬇️ Installation
 To clone and run this app you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/package-manager)(which comes with npm) installed.
 enter the following in your command line:
