@@ -10,7 +10,7 @@ Welcome to the Wag Wise API. This RESTful API connects to the backend of the Wag
 - Users are able to interact with articles via likes and comments.
 - Admin's recieve full CRUD operations for users, articles, comments, and more.
 ## 😃 User Inteface
-The source code for the public/user facing front-end can be found here: /*Insert repo link*/
+The source code for the public/user facing front-end can be found here: [Wag Wise Blog](https://github.com/CiaranO-C/wagwise-blog)
 ## 🔧 Content Management System 
 The source code for the Admin CMS front-end can be found here: [Wag Wise CMS](https://github.com/CiaranO-C/wagwise-cms)
 ## ⬇️ Installation
