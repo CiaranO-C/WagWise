@@ -1,5 +1,6 @@
-![wagwise header](https://github.com/user-attachments/assets/f4021ad7-4cb7-4f37-811f-5b8783ce590b)
-&nbsp;
+
+&nbsp;![wagwise-header](https://github.com/user-attachments/assets/c4ad3afe-a46a-47d5-aef5-d48369f158a4)
+
 &nbsp;
 ## 🐕 Introduction
 Welcome to the Wag Wise API. This RESTful API connects to the backend of the Wag Wise website, handling all interactions with the site's content for both users and admins.
