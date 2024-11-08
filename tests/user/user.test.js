@@ -78,4 +78,28 @@ describe("User Interaction with Article", () => {
           });
       });
   });
+
+  test("User can like, or un-like article", (done) => {
+    request
+      .put("/api/user/likes")
+      .set("Authorization", `Bearer ${accessToken}`)
+      .send({ id: article.id, like: true })
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .expect({ updated: true })
+      .then(() => {
+        request
+          .get(`/api/articles/${article.id}`)
+          .expect("Content-Type", /json/)
+          .expect(200)
+          .then(({ body }) => {
+            expect(
+              body.article.likes.some(
+                (likedBy) => likedBy.username === userData.username,
+              ),
+            ).toBe(true);
+            done();
+          });
+      });
+  });
 });
