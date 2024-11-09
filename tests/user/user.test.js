@@ -1,4 +1,5 @@
 const prisma = require("../../config/prisma");
+const { publishArticle } = require("../../src/article/article-queries");
 const { generateTokens } = require("../../src/user/auth/tokens");
 const { createUser } = require("../../src/user/user-queries");
 const { hashPassword } = require("../../src/user/user-utils");
@@ -16,11 +17,14 @@ describe("User Interaction with Article", () => {
     const user = await createUser(userData.username, hashedPassword);
     const [token] = await generateTokens(user.id);
     accessToken = token;
+    const articleData = await createTestArticle(user.id);
+    const published = await publishArticle(articleData.id);
 
-    article = await createTestArticle(user.id);
+    article = published;
   });
 
   afterAll(async () => {
+    await prisma.tags.deleteMany({});
     await prisma.comment.deleteMany({});
     await prisma.article.deleteMany({});
     await prisma.refreshToken.deleteMany({});

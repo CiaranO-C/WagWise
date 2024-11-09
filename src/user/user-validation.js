@@ -16,9 +16,7 @@ const validateUsername = body("username")
 const validateNewUsername = [
   validateUsername,
   body("username").custom(async (username) => {
-    try {
-        console.log(username);
-        
+    try {        
       const userExists = await checkUsername(username);
       if (userExists) {
         throw new Error("Username already in use");
@@ -47,7 +45,8 @@ const validateNewPassword = [
     .withMessage("Password must contain at least one uppercase letter.")
     .matches(/[0-9]/)
     .withMessage("Password must contain at least one number."),
-  body("confirmPassword").custom((confirmPass, { req }) => {
+  body("confirmPassword").custom((confirmPass, { req }) => { 
+    
     if (confirmPass !== req.body.password) {
       throw new Error("Confirm password must match Password");
     }

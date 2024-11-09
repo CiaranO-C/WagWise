@@ -86,15 +86,9 @@ async function putUser(req, res, next) {
 
 async function getUser(req, res, next) {
   try {
-    console.log("TIME: ", new Date());
-
-    console.log("IN GET USER");
-
     const { id } = req.user;
-    console.log("USER ID -> ", id);
 
     const user = await retrieveUser(id);
-    console.log("USER -> ", Boolean(user));
 
     res.json({
       user: {
@@ -141,7 +135,6 @@ async function getReviewComments(req, res, next) {
 async function getComments(req, res, next) {
   try {
     const comments = await retrieveAllComments();
-    console.log("COMMENTS: ", comments);
 
     res.json({ comments });
   } catch (error) {

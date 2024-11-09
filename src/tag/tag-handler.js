@@ -19,7 +19,6 @@ async function getAllTags(req, res, next) {
 async function getTag(req, res, next) {
   try {
     const user = req?.user;
-    console.log(user);
     
     const tagName = req.params.tagName;
     const tag = await getTagByName(tagName, user);
@@ -53,7 +52,6 @@ async function deleteTag(req, res, next) {
 async function postTag(req, res, next) {
   try {
     const { tagName } = req.body;
-    console.log(tagName);
     
     const newTag = await createTag(tagName);
     res.json({ newTag });

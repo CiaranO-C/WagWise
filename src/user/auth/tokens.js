@@ -54,11 +54,8 @@ async function sendTokensToClient(req, res, next) {
 async function authorizeRefreshToken(req, res, next) {
   try {
     const refreshToken = req.headers["refresh"];
-    console.log("Received refresh token --> ", refreshToken);
 
     if (!refreshToken) {
-      console.log("No refresh token!");
-
       return res
         .status(401)
         .json({ message: "Client does not have refresh token" });
@@ -69,13 +66,11 @@ async function authorizeRefreshToken(req, res, next) {
 
     // token invalid or expired
     if (!validToken || new Date() > validToken.expiresAt) {
-      console.log("refresh token invalid or expired");
 
       return res
         .status(401)
         .json({ message: "Token invalid, Log in to generate new token" });
     }
-    console.log("Refresh token valid!");
 
     // valid refresh token
     req.user = validToken.user;

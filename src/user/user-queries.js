@@ -183,7 +183,6 @@ async function deleteAllComments() {
 async function updateUserLikes(user, articleId, like) {
   try {
     const type = like ? "connect" : "disconnect";
-    console.log(like ? "LIKING POST!" : "DISLIKING POST!");
     
     const res = await prisma.user.update({
       where: {

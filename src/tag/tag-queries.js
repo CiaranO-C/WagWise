@@ -85,7 +85,7 @@ async function createTag(tagName) {
       },
     });
     return newTag;
-  } catch (error) {
+  } catch (error) {    
     throw new Error("Error creating tag");
   }
 }

@@ -27,6 +27,7 @@ describe("Admin routes for users and comments", () => {
   });
 
   afterAll(async () => {
+    await prisma.tags.deleteMany({});
     await prisma.comment.deleteMany({});
     await prisma.article.deleteMany({});
     await prisma.refreshToken.deleteMany({});
