@@ -4,16 +4,26 @@ const { createTag } = require("../src/tag/tag-queries");
 const { generateTokens } = require("../src/user/auth/tokens");
 const { hashPassword } = require("../src/user/user-utils");
 
-function getRandomUsername() {
-  return `testUser${Math.floor(Math.random() * 100000)}`;
+function getRandomSuffix(base) {
+  return `${base}${Math.floor(Math.random() * 100000)}`;
 }
 
 function testUser() {
-  const username = getRandomUsername();
+  const username = getRandomSuffix("testUser");
   return {
     username,
     password: "testPass1",
     confirmPassword: "testPass1",
+  };
+}
+
+function testArticle() {
+  const title = getRandomSuffix("Title");
+
+  return {
+    title,
+    text: "<p>text</p>",
+    tagNames: ["tag1", "tag2"],
   };
 }
 
@@ -34,18 +44,8 @@ async function createTestUser(role = "USER") {
 }
 
 async function createTestArticle(authorId) {
-  const testArticle = {
-    title: "Title",
-    text: "<p>text</p>",
-    tagNames: ["tag1", "tag2"],
-  };
-
-  const article = await createArticle(
-    testArticle.title,
-    testArticle.text,
-    testArticle.tagNames,
-    authorId,
-  );
+  const { title, text, tagNames } = testArticle();
+  const article = await createArticle(title, text, tagNames, authorId);
 
   return article;
 }
@@ -62,5 +62,6 @@ module.exports = {
   createTestUser,
   createTestArticle,
   createTestTags,
-  testTags
+  testTags,
+  testArticle,
 };
