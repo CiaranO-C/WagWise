@@ -24,7 +24,7 @@ async function getAllArticles(req, res, next) {
         message: "No articles found",
       });
     }
-    
+
     return res.status(200).json({ articles });
   } catch (error) {
     next(error);
@@ -33,9 +33,10 @@ async function getAllArticles(req, res, next) {
 
 async function getArticle(req, res, next) {
   const id = Number(req.params.id);
+  const user = req?.user;
   try {
-    const article = await getArticleById(id);
-    
+    const article = await getArticleById(id, user);
+
     if (!article) {
       return res.status(404).json({
         message: "Article not found",
@@ -51,7 +52,7 @@ async function postComment(req, res, next) {
   try {
     const articleId = Number(req.params.id);
     const authorId = req.user.id;
-    
+
     let { text } = req.body;
     const isBad = profanityCheck(text);
     if (isBad) text = profanityReplace(text);
@@ -78,6 +79,7 @@ async function putArticle(req, res, next) {
   try {
     const id = Number(req.params.id);
     const { title, text, tagNames } = req.body;
+    
     const article = await updateArticle(id, title, text, tagNames);
     res.json({ article });
   } catch (error) {
@@ -88,7 +90,7 @@ async function putArticle(req, res, next) {
 async function deleteArticle(req, res, next) {
   try {
     const id = Number(req.params.id);
-    
+
     const deleted = await deleteDbArticle(id);
     res.json({ deleted });
   } catch (error) {
@@ -143,7 +145,7 @@ async function postUnpublish(req, res, next) {
 async function getSearchArticles(req, res, next) {
   try {
     const user = req?.user;
-    
+
     //if search has mulptiple words format for prisma query
     const searchQuery = req.query.query.split(" ").join(" | ");
     const articles = await searchArticles(searchQuery, user);

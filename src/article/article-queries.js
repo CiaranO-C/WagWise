@@ -4,7 +4,6 @@ async function searchArticles(value, user) {
   try {
     //if user is not admin only fetch published articles
     const condition = user?.role === "ADMIN" ? {} : { published: true };
-    console.log(condition);
 
     const articles = prisma.article.findMany({
       where: condition,
@@ -69,10 +68,11 @@ async function getUnpublished(sort, order, limit) {
   }
 }
 
-async function getArticleById(id) {
+async function getArticleById(id, user) {
   try {
+    const condition = user?.role === "ADMIN" ? { id } : { id, published: true };
     const article = await prisma.article.findUnique({
-      where: { id: id },
+      where: condition,
       include: {
         tags: true,
         likes: true,
@@ -88,8 +88,6 @@ async function getArticleById(id) {
 
 async function createArticle(title, text, tagNames, userId) {
   try {
-    console.log(typeof tagNames);
-
     const article = await prisma.article.create({
       data: {
         title: title,
@@ -142,8 +140,6 @@ async function insertComment(articleId, authorId, text, review) {
 }
 
 async function deleteDbArticle(id) {
-  console.log("ID -->", id);
-
   try {
     const deleted = await prisma.article.delete({
       where: {
