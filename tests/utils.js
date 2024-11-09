@@ -1,5 +1,6 @@
 const prisma = require("../config/prisma");
 const { createArticle } = require("../src/article/article-queries");
+const { createTag } = require("../src/tag/tag-queries");
 const { generateTokens } = require("../src/user/auth/tokens");
 const { hashPassword } = require("../src/user/user-utils");
 
@@ -49,4 +50,17 @@ async function createTestArticle(authorId) {
   return article;
 }
 
-module.exports = { testUser, createTestUser, createTestArticle };
+const testTags = ["tag1", "tag2"];
+
+async function createTestTags() {
+  await createTag(testTags[0]);
+  await createTag(testTags[1]);
+}
+
+module.exports = {
+  testUser,
+  createTestUser,
+  createTestArticle,
+  createTestTags,
+  testTags
+};
