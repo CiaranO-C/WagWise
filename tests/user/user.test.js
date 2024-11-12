@@ -6,6 +6,42 @@ const { hashPassword } = require("../../src/user/user-utils");
 const { request } = require("../config");
 const { testUser, createTestArticle } = require("../utils");
 
+describe("Non-article user routes", () => {
+  let accessToken;
+  let user;
+
+  beforeAll(async () => {
+    const userData = testUser();
+    const hashedPassword = await hashPassword(userData.password);
+    user = await createUser(userData.username, hashedPassword);
+    const [token] = await generateTokens(user.id);
+    accessToken = token;
+  });
+
+  afterAll(async () => {
+    await prisma.refreshToken.deleteMany({});
+    await prisma.user.deleteMany({});
+  });
+
+  test("User can update username", (done) => {    
+    request
+      .put(`/api/user/${user.id}`)
+      .set("Authorization", `Bearer ${accessToken}`)
+      .type("form")
+      .send({ username: "newUsername" })
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toHaveProperty("updated");
+        expect(body.updated.username).toEqual("newUsername")
+        done();
+      })
+      .catch(done);
+  });
+
+
+});
+
 describe("User Interaction with Article", () => {
   let article;
   let accessToken;
@@ -47,6 +83,22 @@ describe("User Interaction with Article", () => {
       .catch(done);
   });
 
+  test("offensive comment censored successfully", (done) => {
+    request
+      .post(`/api/articles/${article.id}/comment`)
+      .set("Authorization", `Bearer ${accessToken}`)
+      .type("form")
+      .send({ text: "you turd!" })
+      .expect("Content-Type", /json/)
+      .then((res) => {
+        expect(res.body).toHaveProperty("comment.text", "you ****!");
+        commentId = res.body.comment.id;
+        expect(200);
+        done();
+      })
+      .catch(done);
+  });
+
   test("User can check and delete comments", (done) => {
     request
       .get("/api/user/comments")
@@ -71,7 +123,7 @@ describe("User Interaction with Article", () => {
           .set("Authorization", `Bearer ${accessToken}`)
           .then((res) => {
             expect(res.body).toHaveProperty("comments");
-            expect(res.body.comments.length).toBe(0);
+            expect(res.body.comments.length).toBe(1);
             done();
           });
       });
