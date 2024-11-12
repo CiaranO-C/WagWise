@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "NODE_ENV=development && node --watch app.js",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles --coverage",
     "serve": "node --watch app.js"
   },
   "keywords": [],
