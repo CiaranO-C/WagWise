@@ -74,10 +74,12 @@ async function adminDeleteComment(req, res, next) {
 async function putUser(req, res, next) {
   try {
     currentUserId = req.user.id;
-    const { id } = req.params;
+    const id = Number(req.params.id);
+    const { username } = req.body;
+    
     if (currentUserId !== id)
       return res.status(403).json({ message: "Forbidden" });
-    const updated = await updateUser(id);
+    const updated = await updateUser(id, username);
     res.json({ updated });
   } catch (error) {
     next(error);
