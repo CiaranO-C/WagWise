@@ -102,14 +102,18 @@ async function deleteDbComment(author, id) {
   }
 }
 
-async function updateUser(id) {
+async function updateUser(id, username) {
   try {
     const updated = await prisma.user.update({
       where: {
         id: id,
       },
-      data: {},
+      data: {
+        username,
+      },
     });
+
+    return updated
   } catch (error) {
     throw new Error(`Error updating user: ${id}`);
   }
@@ -183,7 +187,7 @@ async function deleteAllComments() {
 async function updateUserLikes(user, articleId, like) {
   try {
     const type = like ? "connect" : "disconnect";
-    
+
     const res = await prisma.user.update({
       where: {
         id: user.id,
@@ -196,7 +200,7 @@ async function updateUserLikes(user, articleId, like) {
         },
       },
     });
-   
+
     return res;
   } catch (error) {
     throw new Error("Error liking article");
