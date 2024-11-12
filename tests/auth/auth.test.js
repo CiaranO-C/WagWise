@@ -65,4 +65,40 @@ describe("User Authentication Flow", () => {
       .expect("Content-Type", /json/)
       .expect(200, done);
   });
+
+  test("sign up with name already in use rejects", (done) => {
+    request
+      .post("/api/user/sign-up")
+      .type("form")
+      .send(userData)
+      .expect("Content-Type", /json/)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toHaveProperty("errors");
+        expect(body.errors[0].msg).toEqual(
+          "Failed username check: Username already in use",
+        );
+        done();
+      });
+  });
+
+  test("log in with incorrect password", (done) => {
+    request
+      .post("/api/user/log-in")
+      .type("form")
+      .send({ username: userData.username, password: "incorrectPassword1" })
+      .expect("Content-Type", /json/)
+      .expect({ error: "Incorrect password" })
+      .expect(400, done);
+  });
+
+  test("log in non-existing user gets 400 response", (done) => {
+    request
+      .post("/api/user/log-in")
+      .type("form")
+      .send({ username: "noUser", password: "noUser1" })
+      .expect("Content-Type", /json/)
+      .expect({ error: "Username does not exist" })
+      .expect(400, done);
+  });
 });
