@@ -1,15 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const { intialisePassport } = require("./passport");
-const apiRouter = require("../src/apiRouter")
+const apiRouter = require("../src/apiRouter");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:5174",
-  "http://localhost:5173",
   "https://wagwise-cms.vercel.app",
   "https://wagwise-blog.vercel.app",
 ];
@@ -26,14 +24,12 @@ app.use(
       }
     },
     credentials: true,
-  })
+  }),
 );
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 
 intialisePassport();
 
@@ -42,8 +38,8 @@ app.use("/api", apiRouter);
 //error handler
 app.use((err, req, res, next) => {
   //log for debug
-  console.error(err.stack); 
-  
+  console.error(err.stack);
+
   res.status(err.status || 500).json({
     error: {
       message: err.message || "Something went wrong!",
@@ -57,4 +53,4 @@ app.use((req, res, next) => {
   res.status(404).json({ error: "resource does not exist" });
 });
 
-module.exports = app; 
+module.exports = app;
